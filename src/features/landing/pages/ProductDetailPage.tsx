@@ -6,7 +6,11 @@ import { Footer } from "../../../shared/components/Footer";
 import { useProduct } from "../../product/hooks/useProduct";
 import { PUBLIC_PRODUCT_COLUMNS } from "../../product/services/product.service";
 import { formatCRC } from "../../../shared/utils/formatCurrency";
-import { PRODUCT_BRANDS, PRODUCT_TYPES } from "../../../constants/data";
+import {
+  PRODUCT_BRANDS,
+  PRODUCT_SIZES,
+  PRODUCT_TYPES,
+} from "../../../constants/data";
 import { notifyInfo } from "../../../shared/utils/notify";
 
 const INSTAGRAM_DM_URL = "https://ig.me/m/tenis_fresonas";
@@ -25,6 +29,8 @@ export function ProductDetailPage() {
     id,
     columns: PUBLIC_PRODUCT_COLUMNS,
   });
+
+  const sizes = product ? (PRODUCT_SIZES[product.type] ?? []) : [];
 
   async function handleBuy() {
     if (!product) return;
@@ -139,6 +145,24 @@ export function ProductDetailPage() {
               <p className="text-3xl font-black tracking-tight text-primary sm:text-4xl">
                 {formatCRC(String(product.price))}
               </p>
+
+              {sizes.length > 0 && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground sm:text-xs">
+                    Tallas disponibles
+                  </p>
+                  <ul className="flex flex-wrap gap-2">
+                    {sizes.map((size) => (
+                      <li
+                        key={size}
+                        className="flex h-9 min-w-9 items-center justify-center border border-input bg-background px-3 text-xs font-bold uppercase tracking-wider text-foreground"
+                      >
+                        {size}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <div className="mt-2 border-t border-border pt-4 sm:mt-4 sm:pt-6">
                 <button
